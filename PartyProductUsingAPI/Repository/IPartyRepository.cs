@@ -9,8 +9,9 @@ namespace PartyProductUsingAPI.Repository
     public interface IPartyRepository
     {
         Task<List<Party>> GetAllParty();
-        Task<int> PartyAddAsync(Party partyModel);
-        Task EditPartyAsync(int id, Party party);
+        Task<Party> PartyAddAsync(Party partyModel);
+        Task<Party> EditPartyAsync(int id, Party party);
+        Task<Party> GetPartyByIdAsync(int id);
         Task DeletePartyAsync(int id);
     }
 }

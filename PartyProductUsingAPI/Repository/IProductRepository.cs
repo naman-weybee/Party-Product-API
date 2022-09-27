@@ -9,8 +9,9 @@ namespace PartyProductUsingAPI.Repository
     public interface IProductRepository
     {
         Task<List<Product>> GetAllProduct();
-        Task<int> ProductAddAsync(Product productModel);
-        Task EditProductAsync(int id, Product product);
+        Task<Product> ProductAddAsync(Product productModel);
+        Task<Product> EditProductAsync(int id, Product product);
+        Task<Product> GetProductByIdAsync(int id);
         Task DeleteProductAsync(int id);
     }
 }

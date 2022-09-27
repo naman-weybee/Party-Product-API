@@ -26,7 +26,7 @@ namespace PartyProductUsingAPI.Repository
                   }).ToListAsync();
         }
 
-        public async Task<int> PartyAddAsync(Party partyModel)
+        public async Task<Party> PartyAddAsync(Party partyModel)
         {
             var newParty = new Party()
             {
@@ -36,10 +36,10 @@ namespace PartyProductUsingAPI.Repository
             await _context.Parties.AddAsync(newParty);
             await _context.SaveChangesAsync();
 
-            return newParty.Id;
+            return newParty;
         }
 
-        public async Task EditPartyAsync(int id, Party party)
+        public async Task<Party> EditPartyAsync(int id, Party party)
         {
             var updateParty = new Party()
             {
@@ -49,6 +49,18 @@ namespace PartyProductUsingAPI.Repository
 
             _context.Parties.Update(updateParty);
             await _context.SaveChangesAsync();
+            return updateParty;
+        }
+
+        public async Task<Party> GetPartyByIdAsync(int id)
+        {
+            var record = await _context.Parties.Where(x => x.Id == id).Select(x => new Party()
+            {
+                Id = x.Id,
+                PartyName = x.PartyName
+            }).FirstOrDefaultAsync();
+
+            return record;
         }
 
         public async Task DeletePartyAsync(int id)

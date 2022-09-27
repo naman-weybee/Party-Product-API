@@ -26,7 +26,7 @@ namespace PartyProductUsingAPI.Repository
                 }).ToListAsync();
         }
 
-        public async Task<int> ProductAddAsync(Product productModel)
+        public async Task<Product> ProductAddAsync(Product productModel)
         {
             var newProduct = new Product()
             {
@@ -36,10 +36,10 @@ namespace PartyProductUsingAPI.Repository
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
 
-            return newProduct.Id;
+            return newProduct;
         }
 
-        public async Task EditProductAsync(int id, Product product)
+        public async Task<Product> EditProductAsync(int id, Product product)
         {
             var updateProduct = new Product()
             {
@@ -49,6 +49,18 @@ namespace PartyProductUsingAPI.Repository
 
             _context.Products.Update(updateProduct);
             await _context.SaveChangesAsync();
+            return updateProduct;
+        }
+
+        public async Task<Product> GetProductByIdAsync(int id)
+        {
+            var record = await _context.Products.Where(x => x.Id == id).Select(x => new Product()
+            {
+                Id = x.Id,
+                ProductName = x.ProductName
+            }).FirstOrDefaultAsync();
+
+            return record;
         }
 
         public async Task DeleteProductAsync(int id)

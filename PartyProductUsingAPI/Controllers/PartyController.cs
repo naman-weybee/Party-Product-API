@@ -30,15 +30,26 @@ namespace PartyProductUsingAPI.Controllers
         [HttpPost("")]
         public async Task<IActionResult> PartyAdd([FromBody] Party party)
         {
-            int id = await _partyRepository.PartyAddAsync(party);
-            return CreatedAtAction(nameof(PartyAdd), new { controller = "Party" }, id);
+            var data = await _partyRepository.PartyAddAsync(party);
+            return CreatedAtAction(nameof(PartyAdd), new { controller = "Party" }, data);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditParty([FromRoute] int id, [FromBody] Party party)
         {
-            await _partyRepository.EditPartyAsync(id, party);
-            return Ok();
+            var data = await _partyRepository.EditPartyAsync(id, party);
+            return Ok(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPartyById([FromRoute] int id)
+        {
+            var party = await _partyRepository.GetPartyByIdAsync(id);
+            if (party == null)
+            {
+                return NotFound();
+            }
+            return Ok(party);
         }
 
         [HttpDelete("{id}")]
